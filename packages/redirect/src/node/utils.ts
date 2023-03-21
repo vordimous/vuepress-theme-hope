@@ -1,6 +1,6 @@
 import { Logger } from "vuepress-shared/node";
 
-import { RedirectLocaleOptions } from "./options.js";
+import { RedirectLocaleConfig } from "./options.js";
 
 export const PLUGIN_NAME = "vuepress-plugin-redirect";
 
@@ -12,7 +12,7 @@ export const getLocaleRedirectHTML = (
     defaultBehavior,
     defaultLocale,
     localeFallback,
-  }: Required<RedirectLocaleOptions>,
+  }: RedirectLocaleConfig,
   availableLocales: string[]
 ): string => `<!DOCTYPE html>
 <html lang="en">
