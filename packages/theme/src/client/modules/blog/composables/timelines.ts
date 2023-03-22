@@ -6,7 +6,6 @@ import {
   provide,
 } from "vue";
 import { type Article, useBlogType } from "vuepress-plugin-blog2/client";
-import { getDate } from "vuepress-shared/client";
 
 import { type ArticleInfo, ArticleInfoType } from "../../../../shared/index.js";
 
@@ -49,8 +48,10 @@ export const setupTimelines = (): void => {
 
     // filter before sort
     timelines.value.items.forEach(({ info, path }) => {
-      const { year, month, day } =
-        getDate(info[ArticleInfoType.date])?.info || {};
+      const date = new Date(info[ArticleInfoType.date]!);
+      const year = date?.getFullYear();
+      const month = date ? date.getMonth() + 1 : null;
+      const day = date?.getDate();
 
       if (year && month && day) {
         if (!timelineItems[0] || timelineItems[0].year !== year)

@@ -5,10 +5,8 @@ import { type ReadingTime } from "vuepress-plugin-reading-time2";
 import {
   type AuthorInfo,
   type BasePageFrontMatter,
-  type DateInfo,
   getAuthor,
   getCategory,
-  getDate,
   getTag,
 } from "vuepress-shared/client";
 
@@ -73,18 +71,18 @@ export const usePageTag = (): ComputedRef<PageTag[]> => {
   );
 };
 
-export const usePageDate = (): ComputedRef<DateInfo | null> => {
+export const usePageDate = (): ComputedRef<Date | null> => {
   const frontmatter = usePageFrontmatter<BasePageFrontMatter>();
   const page = usePageData<{ git?: GitData }>();
 
   return computed(() => {
     const { date } = frontmatter.value;
 
-    if (date) return getDate(date);
+    if (date instanceof Date) return date;
 
     const { createdTime } = page.value.git || {};
 
-    if (createdTime) return getDate(new Date(createdTime));
+    if (createdTime) return new Date(createdTime);
 
     return null;
   });
