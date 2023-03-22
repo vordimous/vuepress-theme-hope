@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { getDate } from "../../src/shared/utils/date.js";
+import { getDateInfo } from "../../src/shared/utils/date.js";
 
 const getCurrentDate = (date: Date): Date =>
   new Date(date.getTime() + new Date().getTimezoneOffset() * 60 * 1000);
 
-describe("getDate()", () => {
+describe("getDateInfo()", () => {
   describe("Should parse day", () => {
     it("date string", () => {
-      expect(getDate("2020-04-04T00:00:00.000Z", "Asia/Shanghai")).toEqual({
+      expect(getDateInfo("2020-04-04T00:00:00.000Z", "Asia/Shanghai")).toEqual({
         info: {
           day: 4,
           hour: 8,
@@ -21,7 +21,7 @@ describe("getDate()", () => {
         type: "full",
       });
 
-      expect(getDate("2020-04-04T00:00:00.000Z", "UTC")).toEqual({
+      expect(getDateInfo("2020-04-04T00:00:00.000Z", "UTC")).toEqual({
         info: {
           day: 4,
           month: 4,
@@ -31,7 +31,7 @@ describe("getDate()", () => {
         type: "date",
       });
 
-      expect(getDate("2020-04-04T00:00:00.000Z", "Asia/shanghai")).toEqual({
+      expect(getDateInfo("2020-04-04T00:00:00.000Z", "Asia/shanghai")).toEqual({
         info: {
           day: 4,
           hour: 8,
@@ -46,7 +46,7 @@ describe("getDate()", () => {
     });
 
     it("date", () => {
-      expect(getDate("1918-01-01")).toEqual({
+      expect(getDateInfo("1918-01-01")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -58,7 +58,7 @@ describe("getDate()", () => {
     });
 
     it("simple date like string", () => {
-      expect(getDate("2018-1-1")).toEqual({
+      expect(getDateInfo("2018-1-1")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -70,7 +70,7 @@ describe("getDate()", () => {
     });
 
     it("date like string with splash", () => {
-      expect(getDate("1918/01/01")).toEqual({
+      expect(getDateInfo("1918/01/01")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -80,7 +80,7 @@ describe("getDate()", () => {
         type: "date",
       });
 
-      expect(getDate("2018/1/1")).toEqual({
+      expect(getDateInfo("2018/1/1")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -92,7 +92,7 @@ describe("getDate()", () => {
     });
 
     it("date string with spaces", () => {
-      expect(getDate(" 1918-01-01")).toEqual({
+      expect(getDateInfo(" 1918-01-01")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -104,7 +104,7 @@ describe("getDate()", () => {
     });
 
     it("date like string with spaces", () => {
-      expect(getDate(" 2018-1-1 ")).toEqual({
+      expect(getDateInfo(" 2018-1-1 ")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -116,7 +116,7 @@ describe("getDate()", () => {
     });
 
     it("date like string with splash and spaces", () => {
-      expect(getDate("  2018/1/1  ")).toEqual({
+      expect(getDateInfo("  2018/1/1  ")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -128,7 +128,7 @@ describe("getDate()", () => {
     });
 
     it("date like string with spaces and short year", () => {
-      expect(getDate("18-01-01")).toEqual({
+      expect(getDateInfo("18-01-01")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -140,7 +140,7 @@ describe("getDate()", () => {
     });
 
     it("date like string with splash and spaces and short year", () => {
-      expect(getDate("18/01/01 ")).toEqual({
+      expect(getDateInfo("18/01/01 ")).toEqual({
         info: {
           day: 1,
           month: 1,
@@ -154,13 +154,13 @@ describe("getDate()", () => {
 
   describe("Should parse time", () => {
     it("Should parse time with hours and minutes", () => {
-      expect(getDate("12:30")).toEqual({
+      expect(getDateInfo("12:30")).toEqual({
         info: { hour: 12, minute: 30, second: 0 },
         value: undefined,
         type: "time",
       });
 
-      expect(getDate("00:00")).toEqual({
+      expect(getDateInfo("00:00")).toEqual({
         info: { hour: 0, minute: 0, second: 0 },
         value: undefined,
         type: "time",
@@ -168,13 +168,13 @@ describe("getDate()", () => {
     });
 
     it("Should parse time with hours, minutes and seconds", () => {
-      expect(getDate("12:30:00")).toEqual({
+      expect(getDateInfo("12:30:00")).toEqual({
         info: { hour: 12, minute: 30, second: 0 },
         value: undefined,
         type: "time",
       });
 
-      expect(getDate("12:30:32")).toEqual({
+      expect(getDateInfo("12:30:32")).toEqual({
         info: { hour: 12, minute: 30, second: 32 },
         value: undefined,
         type: "time",
@@ -182,13 +182,13 @@ describe("getDate()", () => {
     });
 
     it("Should parse time with hours, minutes along with spaces", () => {
-      expect(getDate("  12:30")).toEqual({
+      expect(getDateInfo("  12:30")).toEqual({
         info: { hour: 12, minute: 30, second: 0 },
         value: undefined,
         type: "time",
       });
 
-      expect(getDate("00:00  ")).toEqual({
+      expect(getDateInfo("00:00  ")).toEqual({
         info: { hour: 0, minute: 0, second: 0 },
         value: undefined,
         type: "time",
@@ -196,13 +196,13 @@ describe("getDate()", () => {
     });
 
     it("Should parse time with hours, minutes and seconds along with spaces", () => {
-      expect(getDate(" 12:30:00 ")).toEqual({
+      expect(getDateInfo(" 12:30:00 ")).toEqual({
         info: { hour: 12, minute: 30, second: 0 },
         value: undefined,
         type: "time",
       });
 
-      expect(getDate("   12:30:32   ")).toEqual({
+      expect(getDateInfo("   12:30:32   ")).toEqual({
         info: { hour: 12, minute: 30, second: 32 },
         value: undefined,
         type: "time",
@@ -211,7 +211,7 @@ describe("getDate()", () => {
   });
 
   it("Should parse whole date", () => {
-    expect(getDate("2018/12/1 12:30")).toEqual({
+    expect(getDateInfo("2018/12/1 12:30")).toEqual({
       info: {
         day: 1,
         hour: 12,
@@ -224,7 +224,7 @@ describe("getDate()", () => {
       type: "full",
     });
 
-    expect(getDate("18/12/01 12:30")).toEqual({
+    expect(getDateInfo("18/12/01 12:30")).toEqual({
       info: {
         day: 1,
         hour: 12,
@@ -237,7 +237,7 @@ describe("getDate()", () => {
       type: "full",
     });
 
-    expect(getDate("  2018/12/01 12:30:00  ")).toEqual({
+    expect(getDateInfo("  2018/12/01 12:30:00  ")).toEqual({
       info: {
         day: 1,
         hour: 12,
@@ -250,7 +250,7 @@ describe("getDate()", () => {
       type: "full",
     });
 
-    expect(getDate("  2018-12-01 12:30:00  ")).toEqual({
+    expect(getDateInfo("  2018-12-01 12:30:00  ")).toEqual({
       info: {
         day: 1,
         hour: 12,
@@ -263,7 +263,7 @@ describe("getDate()", () => {
       type: "full",
     });
 
-    expect(getDate("  2018-12-1 12:30:00  ")).toEqual({
+    expect(getDateInfo("  2018-12-1 12:30:00  ")).toEqual({
       info: {
         day: 1,
         hour: 12,
@@ -278,7 +278,7 @@ describe("getDate()", () => {
   });
 
   it("Should handle language", () => {
-    expect(getDate("2020-04-04T00:00:00.000Z", "Asia/Shanghai")).toEqual({
+    expect(getDateInfo("2020-04-04T00:00:00.000Z", "Asia/Shanghai")).toEqual({
       info: {
         day: 4,
         hour: 8,
